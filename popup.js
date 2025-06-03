@@ -34,8 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const checked = checkbox.checked;
             const confirmed = confirm(
                 checked
-                    ? "Ativar remoção automática?\nA página será recarregada."
-                    : "Desativar limpeza automática?\nA página será recarregada."
+                    ? "Activate this extension?\nThe Page will be Reloaded."
+                    : "Deactivate this extension?\nThe Page will be Reloaded."
             );
 
             if (!confirmed) {
