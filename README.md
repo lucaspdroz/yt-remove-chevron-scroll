@@ -6,9 +6,11 @@ just to make you crazy.
 Now you have an alternative to disable (without lose the mouse action of scroll down if you really want to see the extra content)
 
 **Before**
+
 ![image of youtube chevron scroll](./images/yt-bar.png)
 
 **After**
+
 ![image of youtube chevron scroll](./images/yt-no-bar.png)
 
 That's why **yt-remove-chevron-scroll** has been created
