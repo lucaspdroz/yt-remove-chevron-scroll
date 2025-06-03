@@ -1,18 +1,22 @@
-const enabledIcon = {
-    path: {
+const ICONS = {
+    enabled: {
         "16": "icons/enabled.png",
         "48": "icons/enabled.png",
         "128": "icons/enabled.png"
-    }
-};
-
-const disabledIcon = {
-    path: {
+    },
+    disabled: {
         "16": "icons/disabled.png",
         "48": "icons/disabled.png",
         "128": "icons/disabled.png"
     }
 };
+
+function setIconForTab(tabId, isEnabled) {
+    chrome.action.setIcon({
+        tabId,
+        path: isEnabled ? ICONS.enabled : ICONS.disabled
+    });
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     const checkbox = document.getElementById("cleaner-toggle");
@@ -23,38 +27,26 @@ document.addEventListener("DOMContentLoaded", () => {
         chrome.storage.sync.get(["cleanerEnabled"], (result) => {
             const isEnabled = result.cleanerEnabled ?? true;
             checkbox.checked = isEnabled;
-
-            // Update icon on popup load
-            chrome.action.setIcon({
-                tabId,
-                path: isEnabled ? enabledIcon.path : disabledIcon.path
-            });
+            setIconForTab(tabId, isEnabled);
         });
 
         checkbox.addEventListener("change", () => {
             const checked = checkbox.checked;
+            const confirmed = confirm(
+                checked
+                    ? "Ativar remoção automática?\nA página será recarregada."
+                    : "Desativar limpeza automática?\nA página será recarregada."
+            );
 
-            if (checked) {
-                const confirmEnable = confirm("Ativar remoção automática?\nA página será recarregada.");
-                if (confirmEnable) {
-                    chrome.storage.sync.set({ cleanerEnabled: true }, () => {
-                        chrome.action.setIcon({ tabId, path: enabledIcon.path });
-                        chrome.tabs.reload(tabId);
-                    });
-                } else {
-                    checkbox.checked = false;
-                }
-            } else {
-                const confirmDisable = confirm("Desativar limpeza automática?\nA página será recarregada.");
-                if (confirmDisable) {
-                    chrome.storage.sync.set({ cleanerEnabled: false }, () => {
-                        chrome.action.setIcon({ tabId, path: disabledIcon.path });
-                        chrome.tabs.reload(tabId);
-                    });
-                } else {
-                    checkbox.checked = true;
-                }
+            if (!confirmed) {
+                checkbox.checked = !checked;
+                return;
             }
+
+            chrome.storage.sync.set({ cleanerEnabled: checked }, () => {
+                setIconForTab(tabId, checked);
+                chrome.tabs.reload(tabId);
+            });
         });
     });
 });
