@@ -15,6 +15,10 @@ Now you have an alternative to disable (without lose the mouse action of scroll 
 
 That's why **yt-remove-chevron-scroll** has been created
 
+How to add it to your browser:
+
+[load-unpacked-extension](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl=pt-br#load-unpacked)
+
 Open issues if you feel that has some potentials updates or contribuite if you feel
 like it. Feel free to use.
 
